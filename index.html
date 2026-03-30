@@ -143,10 +143,10 @@ body { font-family:'Comfortaa',sans-serif; background:var(--warm-white); color:v
 .practice-item.completed-practice { border-color:var(--fresh-green); background:#F8FFF8; }
 .practice-item-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
 .practice-number { font-size:0.78rem; font-weight:700; color:var(--deep-blue); background:#E8F4FD; padding:4px 14px; border-radius:20px; }
-.practice-row { display:grid; grid-template-columns:1.1fr 1fr; gap:24px; align-items:stretch; }
+.practice-row { display:grid; grid-template-columns:1.4fr 1fr; gap:24px; align-items:stretch; }
 @media(max-width:1000px) { .practice-row { grid-template-columns:1fr; } }
 .practice-question-side { min-width:0; }
-.practice-question-side img { width:100%; max-width:100%; border-radius:8px; border:1px solid #E8EDF2; margin-bottom:16px; }
+.practice-question-side img { width:100%; max-width:100%; min-width:420px; border-radius:8px; border:1px solid #E8EDF2; margin-bottom:16px; }
 .desmos-calc-side { border:2px solid var(--sky-blue); border-radius:var(--radius-sm); overflow:hidden; background:white; box-shadow:0 2px 12px rgba(46,80,144,0.1); display:flex; flex-direction:column; min-height:580px; }
 .desmos-calc-side .desmos-label-bar { background:linear-gradient(135deg,var(--deep-blue),#4A7BC8); color:white; font-size:0.72rem; font-weight:600; padding:8px 14px; letter-spacing:1px; display:flex; align-items:center; gap:6px; flex-shrink:0; }
 .desmos-calc-side iframe { width:100%; flex:1; min-height:540px; border:none; display:block; }
@@ -222,6 +222,15 @@ body { font-family:'Comfortaa',sans-serif; background:var(--warm-white); color:v
 .instructor-table td { padding:10px 16px; border-bottom:1px solid #E8EDF2; }
 .instructor-table tr:hover { background:#F0F8FF; }
 .confetti-piece { position:fixed; width:10px; height:10px; top:-10px; z-index:1002; animation:confettiFall linear forwards; }
+/* Rapid Guessing Alert */
+.rapid-guess-overlay { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s; }
+.rapid-guess-overlay.show { opacity:1;pointer-events:all; }
+.rapid-guess-card { background:white;border-radius:20px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,0.4);border-top:6px solid #E74C3C;animation:shakeIn 0.5s; }
+.rapid-guess-card img { max-width:220px;margin:0 auto 16px;display:block;border-radius:12px; }
+.rapid-guess-card h2 { color:#E74C3C;font-family:'Comfortaa',sans-serif;font-size:1.6rem;margin-bottom:12px;letter-spacing:1px; }
+.rapid-guess-card p { color:#555;font-size:0.88rem;line-height:1.6;margin-bottom:20px; }
+.rapid-guess-card button { padding:12px 32px;background:#E74C3C;color:white;border:none;border-radius:10px;font-family:'Comfortaa',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer; }
+@keyframes shakeIn { 0%{transform:scale(0.8) rotate(-2deg);} 30%{transform:scale(1.05) rotate(1deg);} 60%{transform:scale(0.98) rotate(-0.5deg);} 100%{transform:scale(1) rotate(0);} }
 @keyframes confettiFall { 0%{transform:translateY(0) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
 .frac { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; text-align:center; font-family:'Comfortaa',sans-serif; font-weight:700; line-height:1.1; margin:0 2px; position:relative; top:-1px; }
 .frac .frac-num { padding:0 3px 2px; }
@@ -426,6 +435,13 @@ body { font-family:'Comfortaa',sans-serif; background:var(--warm-white); color:v
 </div>
 
 <!-- Graduation Overlay -->
+<div class="rapid-guess-overlay" id="rapid-guess-overlay">
+  <div class="rapid-guess-card">
+    <h2>RAPID GUESSING ALERT</h2>
+    <p style="color:#888;font-size:0.82rem;line-height:1.7;">This has been logged and reported to Mr. Linam.<br>Take your time and follow the steps.</p>
+    <button onclick="dismissRapidGuess()">I understand</button>
+  </div>
+</div>
 <div id="graduation-overlay">
   <div class="graduation-card">
     <svg width="130" height="130" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:8px;">
@@ -834,11 +850,45 @@ function renderPractice(mod){
   return h;
 }
 
+// Rapid guessing detection
+var rgLastCheck=0,rgWrongTimes=[],rgAlertActive=false,rgCooldown=0;
+function detectRapidGuess(wasWrong){
+  var now=Date.now();
+  // Rule 1: Any answer within 7 seconds of last answer
+  if(rgLastCheck>0 && (now-rgLastCheck)<7000){
+    triggerRapidGuess();rgLastCheck=now;return true;
+  }
+  // Rule 2: 2 wrong answers within 20 seconds
+  if(wasWrong){
+    rgWrongTimes.push(now);
+    // Keep only recent wrongs
+    rgWrongTimes=rgWrongTimes.filter(t=>now-t<20000);
+    if(rgWrongTimes.length>=2){
+      triggerRapidGuess();rgLastCheck=now;return true;
+    }
+  }
+  rgLastCheck=now;
+  return false;
+}
+function triggerRapidGuess(){
+  rgAlertActive=true;rgCooldown=Date.now();
+  document.getElementById('rapid-guess-overlay').classList.add('show');
+  // Log to sheets
+  sheetsPost({action:'rapid_guess',studentId:currentUser.id,studentName:currentUser.name,time:new Date().toISOString()});
+}
+function dismissRapidGuess(){
+  document.getElementById('rapid-guess-overlay').classList.remove('show');
+  rgAlertActive=false;rgWrongTimes=[];
+}
+
 function checkPractice(mid,idx){
+  if(rgAlertActive)return; // block while alert showing
   let mod=MODULES.find(m=>m.id===mid),p=mod.practice[idx],el=document.getElementById('answer-'+idx),fb=document.getElementById('feedback-'+idx);
   let ans=el.value.trim(),correct=false;
   if(p.type==='mc')correct=ans.toUpperCase()===p.answer;
   else correct=p.accept.some(a=>ans.toLowerCase()===a.toLowerCase());
+  // Check for rapid guessing BEFORE showing result
+  if(detectRapidGuess(!correct))return;
   if(correct){
     fb.className='answer-feedback correct';fb.textContent='✅ Correct! Great work.';fb.style.display='block';
     el.disabled=true;let btn=el.parentElement.querySelector('.check-btn');if(btn)btn.remove();
@@ -886,6 +936,8 @@ let selAnswers={};
 function selCP(el,q,a){document.querySelectorAll('.checkpoint-option[data-q="'+q+'"]').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');selAnswers[q]=a}
 
 function submitCP(mid){
+  if(rgAlertActive)return;
+  if(detectRapidGuess(false))return;
   let mod=MODULES.find(m=>m.id===mid),ok=true;
   mod.checkpoint.forEach((q,i)=>{
     let sel=selAnswers[i],opts=document.querySelectorAll('.checkpoint-option[data-q="'+i+'"]');
