@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DESMOS ACADEMY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky-blue: #87CEEB;
+  --deep-blue: #2E5090;
+  --light-green: #7BC67E;
+  --fresh-green: #4CAF50;
+  --gold: #F4C430;
+  --orange: #FF8C42;
+  --lavender: #B39DDB;
+  --cream: #FDF8F0;
+  --warm-white: #FAFBFE;
+  --text-dark: #2C3E50;
+  --text-medium: #5A6B7D;
+  --text-light: #8896A7;
+  --success: #4CAF50;
+  --error: #E74C3C;
+  --shadow-soft: 0 2px 15px rgba(46,80,144,0.08);
+  --shadow-medium: 0 4px 25px rgba(46,80,144,0.12);
+  --shadow-strong: 0 8px 40px rgba(46,80,144,0.18);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Comfortaa',sans-serif; background:var(--warm-white); color:var(--text-dark); line-height:1.7; overflow-x:hidden; }
+::-webkit-scrollbar { width:8px; }
+::-webkit-scrollbar-track { background:var(--cream); }
+::-webkit-scrollbar-thumb { background:var(--sky-blue); border-radius:4px; }
+
+/* LANDING */
+#landing-page { min-height:100vh; background:linear-gradient(180deg,#D6EEFF 0%,#E8F4FD 15%,#F0F7E8 40%,#FDF8F0 70%,#F5F0FA 100%); position:relative; overflow:hidden; }
+/* Sun rays from top */
+#landing-page::before { content:''; position:absolute; top:-80px; left:50%; width:600px; height:400px; transform:translateX(-50%); background:radial-gradient(ellipse at top center, rgba(244,196,48,0.12) 0%, rgba(244,196,48,0.04) 40%, transparent 70%); pointer-events:none; z-index:0; }
+.arch-overlay { position:absolute; top:0;left:0;right:0;bottom:0; pointer-events:none; z-index:0; }
+/* Gothic arch silhouette at bottom of landing */
+.arch-overlay::before { content:''; position:absolute; bottom:0; left:0; right:0; height:180px; background: linear-gradient(0deg, rgba(46,80,144,0.04) 0%, transparent 100%); pointer-events:none; }
+.arch-overlay::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:800px; height:120px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 120'%3E%3Cpath d='M0,120 L0,80 Q40,20 80,80 L80,120 M100,120 L100,60 Q120,0 140,60 L140,120 M200,120 L200,70 Q230,10 260,70 L260,120 M320,120 L320,50 Q360,0 400,50 L400,120 M460,120 L460,70 Q490,10 520,70 L520,120 M580,120 L580,60 Q600,0 620,60 L620,120 M680,120 L680,80 Q720,20 760,80 L760,120' fill='none' stroke='rgba(46,80,144,0.06)' stroke-width='3'/%3E%3C/svg%3E") no-repeat center bottom; opacity:0.8; pointer-events:none; }
+.gothic-border-left,.gothic-border-right { position:fixed; top:0; width:60px; height:100%; z-index:1; pointer-events:none; }
+.gothic-border-left { left:0; }
+.gothic-border-right { right:0; }
+.gothic-border-left::before,.gothic-border-right::before { content:''; position:absolute; top:0; width:3px; height:100%; background:linear-gradient(to bottom,var(--sky-blue),var(--lavender),var(--sky-blue)); opacity:0.15; }
+.gothic-border-left::before { left:20px; }
+.gothic-border-right::before { right:20px; }
+/* Gothic pointed arch window shapes on borders */
+.gothic-border-left::after,.gothic-border-right::after { content:''; position:absolute; top:15%; width:28px; height:80px; border:2px solid rgba(46,80,144,0.06); border-radius:50% 50% 0 0; }
+.gothic-border-left::after { left:16px; }
+.gothic-border-right::after { right:16px; }
+.landing-container { position:relative; z-index:2; max-width:560px; margin:0 auto; padding:40px 24px; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.mascot-container { width:140px; height:140px; margin-bottom:20px; animation:float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.mascot-svg { width:100%; height:100%; }
+.academy-title { font-size:2.8rem; font-weight:700; letter-spacing:4px; margin-bottom:6px; background:linear-gradient(135deg,var(--deep-blue),#4A7BC8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-align:center; }
+.academy-subtitle { font-size:0.95rem; color:var(--text-medium); font-weight:400; margin-bottom:32px; text-align:center; letter-spacing:1px; }
+.login-card { background:white; border-radius:var(--radius-lg); padding:36px 32px; width:100%; box-shadow:var(--shadow-strong); border:1px solid rgba(135,206,235,0.15); margin-bottom:28px; }
+.login-card h2 { font-size:1.15rem; font-weight:600; color:var(--deep-blue); margin-bottom:20px; text-align:center; }
+.input-group { margin-bottom:16px; }
+.input-group label { display:block; font-size:0.78rem; font-weight:500; color:var(--text-medium); margin-bottom:6px; letter-spacing:0.5px; }
+.input-group input { width:100%; padding:14px 18px; border:2px solid #E8EDF2; border-radius:var(--radius-sm); font-family:'Comfortaa',sans-serif; font-size:0.95rem; transition:all 0.3s; background:var(--warm-white); }
+.input-group input:focus { outline:none; border-color:var(--sky-blue); box-shadow:0 0 0 3px rgba(135,206,235,0.2); background:white; }
+.login-btn { width:100%; padding:15px; background:linear-gradient(135deg,var(--deep-blue),#4A7BC8); color:white; border:none; border-radius:var(--radius-sm); font-family:'Comfortaa',sans-serif; font-size:1rem; font-weight:600; cursor:pointer; transition:all 0.3s; letter-spacing:1px; margin-top:8px; }
+.login-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(46,80,144,0.3); }
+.login-error { color:var(--error); font-size:0.8rem; text-align:center; margin-top:10px; display:none; }
+.quote-box { background:white; border-radius:var(--radius); padding:24px 28px; width:100%; box-shadow:var(--shadow-soft); border-left:4px solid var(--gold); font-style:italic; }
+.quote-box p { font-size:0.88rem; color:var(--text-medium); line-height:1.8; }
+.quote-box .quote-author { font-style:normal; font-weight:600; color:var(--deep-blue); margin-top:10px; font-size:0.82rem; }
+.instructor-link { margin-top:20px; font-size:0.75rem; color:var(--text-light); cursor:pointer; text-decoration:underline; }
+.instructor-link:hover { color:var(--deep-blue); }
+
+/* DASHBOARD */
+#dashboard { display:none; min-height:100vh; background:linear-gradient(180deg,#D6EEFF 0%,#E8F4FD 20%,var(--warm-white) 50%,#F0F7E8 85%,#E5F2D8 100%); }
+.dash-header { background:linear-gradient(135deg,var(--deep-blue),#4A7BC8); color:white; padding:20px 32px; display:flex; align-items:center; justify-content:space-between; box-shadow:var(--shadow-medium); }
+.dash-header-left { display:flex; align-items:center; gap:14px; }
+.dash-header-left .mini-mascot { width:44px; height:44px; }
+.dash-header h1 { font-size:1.3rem; font-weight:700; letter-spacing:2px; }
+.dash-header-right { display:flex; align-items:center; gap:16px; }
+.student-name-display { font-size:0.85rem; font-weight:500; opacity:0.9; }
+.logout-btn { padding:8px 18px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; border-radius:var(--radius-sm); font-family:'Comfortaa',sans-serif; font-size:0.78rem; cursor:pointer; }
+.logout-btn:hover { background:rgba(255,255,255,0.25); }
+.progress-section { max-width:900px; margin:30px auto 10px; padding:0 24px; }
+.progress-bar-container { background:white; border-radius:var(--radius); padding:20px 28px; box-shadow:var(--shadow-soft); }
+.progress-label { display:flex; justify-content:space-between; font-size:0.82rem; font-weight:500; color:var(--text-medium); margin-bottom:10px; }
+.progress-track { height:14px; background:#E8EDF2; border-radius:7px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--light-green),var(--fresh-green)); border-radius:7px; transition:width 0.6s; width:0%; }
+.modules-grid { max-width:900px; margin:20px auto; padding:0 24px 40px; display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
+.module-card { background:white; border-radius:var(--radius); padding:28px 24px; box-shadow:var(--shadow-soft); border:2px solid transparent; transition:all 0.3s; cursor:pointer; position:relative; overflow:hidden; }
+.module-card:hover:not(.locked) { transform:translateY(-4px); box-shadow:var(--shadow-strong); border-color:var(--sky-blue); }
+.module-card.locked { opacity:0.55; cursor:not-allowed; }
+.module-card.locked::after { content:'🔒'; position:absolute; top:16px; right:16px; font-size:1.3rem; }
+.module-card.completed { border-color:var(--fresh-green); }
+.module-card.completed::after { content:'✅'; position:absolute; top:16px; right:16px; font-size:1.3rem; }
+.module-card.current { border-color:var(--sky-blue); background:linear-gradient(135deg,white,#F0F8FF); }
+.module-number { font-size:0.72rem; font-weight:600; color:var(--sky-blue); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+.module-title { font-size:1.1rem; font-weight:700; color:var(--text-dark); margin-bottom:8px; }
+.module-teks { font-size:0.72rem; color:var(--text-light); margin-bottom:12px; }
+.module-desc { font-size:0.82rem; color:var(--text-medium); line-height:1.6; }
+.module-status { margin-top:14px; font-size:0.75rem; font-weight:600; padding:5px 12px; border-radius:20px; display:inline-block; }
+.module-status.not-started { background:#E8EDF2; color:var(--text-light); }
+.module-status.in-progress { background:#FFF3E0; color:var(--orange); }
+.module-status.complete { background:#E8F5E9; color:var(--fresh-green); }
+
+/* MODULE VIEW */
+#module-view { display:none; min-height:100vh; background:var(--warm-white); }
+.module-header { background:linear-gradient(135deg,var(--deep-blue),#4A7BC8); color:white; padding:18px 32px; display:flex; align-items:center; gap:16px; }
+.back-btn { padding:8px 16px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:white; border-radius:var(--radius-sm); font-family:'Comfortaa',sans-serif; font-size:0.78rem; cursor:pointer; }
+.back-btn:hover { background:rgba(255,255,255,0.25); }
+.module-header-title { font-size:1.2rem; font-weight:700; }
+.module-tabs { background:white; border-bottom:2px solid #E8EDF2; display:flex; max-width:1400px; margin:0 auto; padding:0 32px; }
+.module-tab { padding:16px 24px; font-family:'Comfortaa',sans-serif; font-size:0.82rem; font-weight:600; color:var(--text-light); border:none; background:none; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s; white-space:nowrap; }
+.module-tab:hover { color:var(--deep-blue); }
+.module-tab.active { color:var(--deep-blue); border-bottom-color:var(--deep-blue); }
+.module-tab.tab-locked { opacity:0.4; cursor:not-allowed; }
+.module-content { max-width:1400px; margin:0 auto; padding:28px 32px 60px; }
+.content-card { background:white; border-radius:var(--radius); padding:32px; margin-bottom:24px; box-shadow:var(--shadow-soft); }
+.content-card h3 { font-size:1.1rem; font-weight:700; color:var(--deep-blue); margin-bottom:16px; padding-bottom:10px; border-bottom:2px solid #E8F4FD; }
+.trick-header { text-align:center; margin-bottom:24px; }
+.trick-header .desmos-label { color:var(--light-green); font-weight:700; font-size:1.1rem; }
+.trick-header .trick-title { font-size:1.3rem; font-weight:700; color:var(--text-dark); }
+.example-layout { display:grid; grid-template-columns:1.2fr 1fr; gap:28px; margin-bottom:24px; }
+@media(max-width:768px) { .example-layout{grid-template-columns:1fr} }
+.staar-side { border:2px solid #E8EDF2; border-radius:var(--radius-sm); padding:24px; background:#FAFBFE; }
+.staar-side .staar-badge { display:inline-block; background:var(--deep-blue); color:white; font-size:0.75rem; font-weight:700; padding:5px 14px; border-radius:20px; margin-bottom:12px; letter-spacing:1px; }
+.staar-side img { width:100%; border-radius:8px; border:1px solid #E8EDF2; }
+.desmos-side { display:flex; flex-direction:column; }
+.step-item { display:flex; gap:14px; padding:14px 0; border-bottom:1px solid #F0F2F5; }
+.step-item:last-child { border-bottom:none; }
+.step-number { flex-shrink:0; width:32px; height:32px; background:linear-gradient(135deg,var(--sky-blue),var(--deep-blue)); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:700; }
+.step-content { flex:1; }
+.step-content .step-text { font-size:0.85rem; font-weight:600; color:var(--text-dark); margin-bottom:8px; line-height:1.5; }
+.step-content .step-detail { font-size:0.78rem; color:var(--text-medium); margin-bottom:8px; }
+.step-content img { max-width:100%; border-radius:8px; border:1px solid #E8EDF2; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.step-highlight { background:#FFF8E1; border-left:3px solid var(--gold); padding:8px 14px; border-radius:0 8px 8px 0; font-size:0.78rem; color:var(--orange); font-weight:600; margin-top:8px; }
+/* PRACTICE LAYOUT — side-by-side question + Desmos */
+.practice-grid { display:grid; grid-template-columns:1fr; gap:20px; }
+.practice-item { background:#FAFBFE; border:2px solid #E8EDF2; border-radius:var(--radius-sm); padding:28px; transition:all 0.2s; }
+.practice-item.completed-practice { border-color:var(--fresh-green); background:#F8FFF8; }
+.practice-item-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.practice-number { font-size:0.78rem; font-weight:700; color:var(--deep-blue); background:#E8F4FD; padding:4px 14px; border-radius:20px; }
+.practice-row { display:grid; grid-template-columns:1.1fr 1fr; gap:24px; align-items:stretch; }
+@media(max-width:1000px) { .practice-row { grid-template-columns:1fr; } }
+.practice-question-side { min-width:0; }
+.practice-question-side img { width:100%; max-width:100%; border-radius:8px; border:1px solid #E8EDF2; margin-bottom:16px; }
+.desmos-calc-side { border:2px solid var(--sky-blue); border-radius:var(--radius-sm); overflow:hidden; background:white; box-shadow:0 2px 12px rgba(46,80,144,0.1); display:flex; flex-direction:column; min-height:580px; }
+.desmos-calc-side .desmos-label-bar { background:linear-gradient(135deg,var(--deep-blue),#4A7BC8); color:white; font-size:0.72rem; font-weight:600; padding:8px 14px; letter-spacing:1px; display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.desmos-calc-side iframe { width:100%; flex:1; min-height:540px; border:none; display:block; }
+/* Module 3 gets even taller calculators for intersection finding */
+.desmos-calc-tall { min-height:660px; }
+.desmos-calc-tall iframe { min-height:620px; }
+.practice-item img { max-width:100%; border-radius:8px; border:1px solid #E8EDF2; margin-bottom:16px; }
+/* STICKY STEPS REFERENCE */
+.practice-wrapper { display:flex; gap:24px; align-items:flex-start; }
+.practice-main { flex:1; min-width:0; }
+.steps-sidebar { width:280px; flex-shrink:0; position:sticky; top:20px; max-height:calc(100vh - 40px); overflow-y:auto; }
+.steps-sidebar .sidebar-card { background:linear-gradient(135deg,#F0F8FF,#F5F0FA); border:2px solid rgba(135,206,235,0.3); border-radius:var(--radius); padding:18px; }
+.steps-sidebar h4 { font-size:0.78rem; font-weight:700; color:var(--deep-blue); margin-bottom:12px; letter-spacing:1px; text-transform:uppercase; display:flex; align-items:center; gap:6px; }
+.sidebar-step { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid rgba(135,206,235,0.2); font-size:0.75rem; color:var(--text-medium); line-height:1.5; }
+.sidebar-step:last-child { border-bottom:none; }
+.sidebar-step-num { flex-shrink:0; width:22px; height:22px; background:linear-gradient(135deg,var(--sky-blue),var(--deep-blue)); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:700; }
+@media(max-width:1100px) { .practice-wrapper { flex-direction:column; } .steps-sidebar { width:100%; position:static; max-height:none; } }
+/* GOTHIC VISUAL ENHANCEMENTS */
+.stained-glass-accent { position:absolute; width:120px; height:200px; opacity:0.04; pointer-events:none; }
+.stained-glass-left { top:80px; left:10px; background:radial-gradient(ellipse at center, var(--lavender) 0%, var(--sky-blue) 40%, transparent 70%); border-radius:50% 50% 0 0; }
+.stained-glass-right { top:80px; right:10px; background:radial-gradient(ellipse at center, var(--sky-blue) 0%, var(--light-green) 40%, transparent 70%); border-radius:50% 50% 0 0; }
+.gothic-column { position:fixed; top:0; width:40px; height:100%; pointer-events:none; z-index:0; }
+.gothic-column-left { left:0; background:linear-gradient(180deg, rgba(46,80,144,0.03) 0%, rgba(135,206,235,0.06) 50%, rgba(179,157,219,0.03) 100%); border-right:1px solid rgba(46,80,144,0.05); }
+.gothic-column-right { right:0; background:linear-gradient(180deg, rgba(179,157,219,0.03) 0%, rgba(135,206,235,0.06) 50%, rgba(46,80,144,0.03) 100%); border-left:1px solid rgba(46,80,144,0.05); }
+.floating-brain { position:absolute; opacity:0.06; pointer-events:none; animation:floatSlow 6s ease-in-out infinite; }
+@keyframes floatSlow { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-12px) rotate(3deg)} }
+.dash-brain-decor { position:absolute; right:40px; top:100px; opacity:0.05; pointer-events:none; }
+.module-brain-watermark { position:fixed; bottom:20px; right:20px; opacity:0.04; pointer-events:none; z-index:0; }
+.answer-section { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.answer-section select,.answer-section input[type="text"] { padding:10px 16px; border:2px solid #E8EDF2; border-radius:var(--radius-sm); font-family:'Comfortaa',sans-serif; font-size:0.85rem; background:white; min-width:200px; }
+.answer-section select:focus,.answer-section input[type="text"]:focus { outline:none; border-color:var(--sky-blue); }
+.check-btn { padding:10px 22px; background:var(--deep-blue); color:white; border:none; border-radius:var(--radius-sm); font-family:'Comfortaa',sans-serif; font-size:0.82rem; font-weight:600; cursor:pointer; }
+.check-btn:hover { background:#3A62A8; transform:translateY(-1px); }
+.answer-feedback { font-size:0.82rem; font-weight:600; margin-top:8px; display:none; }
+.answer-feedback.correct { color:var(--success); display:block; }
+.answer-feedback.incorrect { color:var(--error); display:block; }
+.checkpoint-card { background:linear-gradient(135deg,#FFF8E1,#FFFDE7); border:2px solid var(--gold); border-radius:var(--radius); padding:32px; text-align:center; }
+.checkpoint-card h3 { color:var(--orange); border-bottom-color:var(--gold); }
+.checkpoint-desc { font-size:0.88rem; color:var(--text-medium); margin-bottom:20px; }
+.checkpoint-question { background:white; border-radius:var(--radius-sm); padding:24px; margin-bottom:16px; text-align:left; border:1px solid #F0E6C8; }
+.checkpoint-question img { max-width:100%; border-radius:8px; margin-bottom:12px; }
+.checkpoint-options { display:flex; flex-direction:column; gap:8px; }
+.checkpoint-option { display:flex; align-items:center; gap:10px; padding:12px 16px; border:2px solid #E8EDF2; border-radius:var(--radius-sm); cursor:pointer; transition:all 0.2s; font-size:0.88rem; }
+.checkpoint-option:hover { border-color:var(--sky-blue); background:#F0F8FF; }
+.checkpoint-option.selected { border-color:var(--deep-blue); background:#E8F4FD; }
+.checkpoint-option.correct-answer { border-color:var(--success); background:#E8F5E9; }
+.checkpoint-option.wrong-answer { border-color:var(--error); background:#FFEBEE; }
+.submit-checkpoint-btn { padding:14px 40px; background:linear-gradient(135deg,var(--gold),var(--orange)); color:white; border:none; border-radius:var(--radius-sm); font-family:'Comfortaa',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; margin-top:20px; transition:all 0.3s; letter-spacing:1px; }
+.submit-checkpoint-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(244,196,48,0.4); }
+.checkpoint-result { margin-top:20px; padding:20px; border-radius:var(--radius-sm); font-weight:600; display:none; }
+.checkpoint-result.passed { background:#E8F5E9; color:var(--success); border:2px solid var(--success); display:block; }
+.checkpoint-result.failed { background:#FFEBEE; color:var(--error); border:2px solid var(--error); display:block; }
+
+/* OVERLAYS */
+#celebration-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.6); z-index:1000; justify-content:center; align-items:center; }
+#celebration-overlay.show { display:flex; }
+.celebration-card { background:white; border-radius:var(--radius-lg); padding:48px; text-align:center; max-width:480px; box-shadow:var(--shadow-strong); animation:popIn 0.4s ease; }
+@keyframes popIn { 0%{transform:scale(0.8);opacity:0} 100%{transform:scale(1);opacity:1} }
+.celebration-card h2 { font-size:1.8rem; color:var(--deep-blue); margin:16px 0 10px; }
+.celebration-card p { color:var(--text-medium); font-size:0.92rem; margin-bottom:24px; }
+.celebrate-emoji { font-size:3rem; }
+.continue-btn { padding:14px 36px; background:linear-gradient(135deg,var(--fresh-green),var(--light-green)); color:white; border:none; border-radius:var(--radius-sm); font-family:'Comfortaa',sans-serif; font-size:1rem; font-weight:600; cursor:pointer; }
+.continue-btn:hover { transform:translateY(-2px); }
+#graduation-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:linear-gradient(135deg,rgba(46,80,144,0.95),rgba(74,123,200,0.95)); z-index:1001; justify-content:center; align-items:center; }
+#graduation-overlay.show { display:flex; }
+.graduation-card { background:white; border-radius:var(--radius-lg); padding:56px; text-align:center; max-width:520px; box-shadow:var(--shadow-strong); animation:popIn 0.5s ease; }
+.graduation-card h1 { font-size:2rem; color:var(--deep-blue); margin:20px 0 10px; }
+.grad-name { font-size:1.4rem; color:var(--gold); font-weight:700; margin-bottom:16px; }
+.diploma-border { border:3px double var(--gold); padding:24px; border-radius:var(--radius); margin-bottom:24px; }
+#instructor-view { display:none; min-height:100vh; background:var(--warm-white); }
+.instructor-table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+.instructor-table th { background:var(--deep-blue); color:white; padding:12px 16px; text-align:left; font-weight:600; }
+.instructor-table td { padding:10px 16px; border-bottom:1px solid #E8EDF2; }
+.instructor-table tr:hover { background:#F0F8FF; }
+.confetti-piece { position:fixed; width:10px; height:10px; top:-10px; z-index:1002; animation:confettiFall linear forwards; }
+@keyframes confettiFall { 0%{transform:translateY(0) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
+.frac { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; text-align:center; font-family:'Comfortaa',sans-serif; font-weight:700; line-height:1.1; margin:0 2px; position:relative; top:-1px; }
+.frac .frac-num { padding:0 3px 2px; }
+.frac .frac-bar { width:100%; height:1.5px; background:currentColor; min-width:0.8em; }
+.frac .frac-den { padding:2px 3px 0; }
+.frac-neg { font-weight:700; margin-right:1px; vertical-align:middle; }
+@media(max-width:600px) { .academy-title{font-size:2rem} .landing-container{padding:24px 16px} .login-card{padding:24px 20px} .module-header{padding:14px 16px} .module-tabs{padding:0 12px} .module-tab{padding:12px 14px;font-size:0.75rem} .content-card{padding:20px} .example-layout{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<!-- LANDING PAGE -->
+<div id="landing-page">
+  <div class="gothic-border-left"></div>
+  <div class="gothic-border-right"></div>
+  <div class="arch-overlay"></div>
+  <div class="landing-container">
+    <div class="mascot-container" style="width:160px;height:160px;">
+      <svg class="mascot-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Brain with Glasses + Flat Mortarboard Graduation Cap -->
+        <!-- Flat mortarboard cap (proper square board, not pointy) -->
+        <rect x="55" y="48" width="90" height="6" rx="2" fill="#2C3E50"/>
+        <rect x="45" y="44" width="110" height="6" rx="1" fill="#2C3E50"/>
+        <line x1="155" y1="47" x2="165" y2="65" stroke="#F4C430" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="166" cy="68" r="4" fill="#F4C430"/>
+        <!-- Brain body -->
+        <ellipse cx="100" cy="110" rx="52" ry="44" fill="#F8B4B4"/>
+        <!-- Brain folds -->
+        <path d="M72,95 Q64,105 68,115 Q64,125 72,132" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+        <path d="M100,72 Q100,90 97,110 Q100,125 100,148" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+        <path d="M128,95 Q136,105 132,115 Q136,125 128,132" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+        <!-- Glasses frames -->
+        <circle cx="84" cy="108" r="14" fill="white" opacity="0.3"/>
+        <circle cx="116" cy="108" r="14" fill="white" opacity="0.3"/>
+        <circle cx="84" cy="108" r="14" fill="none" stroke="#2C3E50" stroke-width="3"/>
+        <circle cx="116" cy="108" r="14" fill="none" stroke="#2C3E50" stroke-width="3"/>
+        <line x1="98" y1="108" x2="102" y2="108" stroke="#2C3E50" stroke-width="3"/>
+        <line x1="70" y1="106" x2="60" y2="102" stroke="#2C3E50" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="130" y1="106" x2="140" y2="102" stroke="#2C3E50" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Pupils -->
+        <circle cx="84" cy="108" r="5" fill="#4A5568"/>
+        <circle cx="116" cy="108" r="5" fill="#4A5568"/>
+        <!-- Eye shine -->
+        <circle cx="86" cy="106" r="2" fill="white"/>
+        <circle cx="118" cy="106" r="2" fill="white"/>
+        <!-- Cute smile -->
+        <path d="M90,125 Q100,138 110,125" fill="none" stroke="#E8A0A0" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Little blush cheeks -->
+        <ellipse cx="70" cy="118" rx="8" ry="5" fill="#FFB6C1" opacity="0.4"/>
+        <ellipse cx="130" cy="118" rx="8" ry="5" fill="#FFB6C1" opacity="0.4"/>
+      </svg>
+    </div>
+    <h1 class="academy-title">DESMOS ACADEMY</h1>
+    <p class="academy-subtitle">Master the Calculator. Master the STAAR.</p>
+    <div class="login-card">
+      <h2>Welcome, Scholar</h2>
+      <div class="input-group">
+        <label>STUDENT ID</label>
+        <input type="text" id="student-id" placeholder="Enter your Student ID" autocomplete="off" oninput="checkRoster()">
+      </div>
+      <div class="input-group">
+        <label>FULL NAME</label>
+        <input type="text" id="student-name" placeholder="Enter your full name" autocomplete="off">
+        <p id="roster-match" style="font-size:0.75rem;color:var(--fresh-green);margin-top:4px;display:none;"></p>
+      </div>
+      <button class="login-btn" onclick="studentLogin()">ENTER ACADEMY</button>
+      <p class="login-error" id="login-error">Please enter both your Student ID and full name.</p>
+    </div>
+    <div class="quote-box">
+      <p>“I have never had anything in my life that I wanted that I didn’t fight hard to get, and I have never had anything that came without struggle.”</p>
+      <p class="quote-author">— Justice Sonia Sotomayor</p>
+    </div>
+    <p class="instructor-link" onclick="showInstructorLogin()">Instructor Access</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="position:relative;overflow:hidden;">
+  <div class="gothic-column gothic-column-left"></div>
+  <div class="gothic-column gothic-column-right"></div>
+  <!-- Gothic campus architecture silhouette watermark -->
+  <svg class="dash-brain-decor" width="400" height="250" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" style="right:20px;top:120px;opacity:0.035;">
+    <!-- Gothic tower left -->
+    <rect x="40" y="60" width="50" height="190" fill="#2C3E50"/>
+    <path d="M40,60 Q65,10 90,60" fill="#2C3E50"/>
+    <rect x="52" y="80" width="10" height="20" rx="5 5 0 0" fill="white" opacity="0.3"/>
+    <rect x="52" y="120" width="10" height="20" rx="5 5 0 0" fill="white" opacity="0.3"/>
+    <rect x="68" y="80" width="10" height="20" rx="5 5 0 0" fill="white" opacity="0.3"/>
+    <rect x="68" y="120" width="10" height="20" rx="5 5 0 0" fill="white" opacity="0.3"/>
+    <!-- Main building -->
+    <rect x="90" y="100" width="220" height="150" fill="#2C3E50"/>
+    <rect x="90" y="85" width="220" height="18" fill="#2C3E50" rx="3"/>
+    <!-- Gothic arched windows -->
+    <path d="M120,130 Q140,105 160,130 L160,180 L120,180 Z" fill="white" opacity="0.25"/>
+    <path d="M180,130 Q200,100 220,130 L220,180 L180,180 Z" fill="white" opacity="0.25"/>
+    <path d="M240,130 Q260,105 280,130 L280,180 L240,180 Z" fill="white" opacity="0.25"/>
+    <!-- Grand entrance -->
+    <path d="M175,250 L175,190 Q200,160 225,190 L225,250" fill="white" opacity="0.2"/>
+    <!-- Gothic tower right -->
+    <rect x="310" y="60" width="50" height="190" fill="#2C3E50"/>
+    <path d="M310,60 Q335,10 360,60" fill="#2C3E50"/>
+    <rect x="322" y="80" width="10" height="20" rx="5 5 0 0" fill="white" opacity="0.3"/>
+    <rect x="322" y="120" width="10" height="20" rx="5 5 0 0" fill="white" opacity="0.3"/>
+    <rect x="338" y="80" width="10" height="20" rx="5 5 0 0" fill="white" opacity="0.3"/>
+    <rect x="338" y="120" width="10" height="20" rx="5 5 0 0" fill="white" opacity="0.3"/>
+    <!-- Grass line -->
+    <rect x="0" y="245" width="400" height="5" fill="#4CAF50" rx="2" opacity="0.3"/>
+  </svg>
+  <header class="dash-header" style="position:relative;z-index:2;">
+    <div class="dash-header-left">
+      <svg class="mini-mascot" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Mini brain with glasses + mortarboard -->
+        <rect x="55" y="48" width="90" height="5" rx="2" fill="white" opacity="0.9"/>
+        <rect x="48" y="44" width="104" height="5" rx="1" fill="white" opacity="0.9"/>
+        <line x1="152" y1="47" x2="160" y2="60" stroke="#F4C430" stroke-width="2"/>
+        <circle cx="161" cy="63" r="3.5" fill="#F4C430"/>
+        <ellipse cx="100" cy="110" rx="48" ry="40" fill="#F8B4B4" opacity="0.9"/>
+        <circle cx="85" cy="108" r="12" fill="none" stroke="white" stroke-width="2.5"/>
+        <circle cx="115" cy="108" r="12" fill="none" stroke="white" stroke-width="2.5"/>
+        <line x1="97" y1="108" x2="103" y2="108" stroke="white" stroke-width="2.5"/>
+        <circle cx="85" cy="108" r="4.5" fill="#4A5568"/>
+        <circle cx="115" cy="108" r="4.5" fill="#4A5568"/>
+        <path d="M92,123 Q100,134 108,123" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h1>DESMOS ACADEMY</h1>
+    </div>
+    <div class="dash-header-right">
+      <span class="student-name-display" id="display-name"></span>
+      <button class="logout-btn" onclick="logout()">Log Out</button>
+    </div>
+  </header>
+  <div class="progress-section">
+    <div class="progress-bar-container">
+      <div class="progress-label">
+        <span>Academy Progress</span>
+        <span id="progress-text">0 / 3 Modules Complete</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+  <div class="modules-grid" id="modules-grid"></div>
+</div>
+
+<!-- MODULE VIEW -->
+<div id="module-view" style="position:relative;">
+  <div class="gothic-column gothic-column-left"></div>
+  <div class="gothic-column gothic-column-right"></div>
+  <!-- Brain mascot watermark in module view -->
+  <svg class="module-brain-watermark" width="100" height="100" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <rect x="55" y="48" width="90" height="6" rx="2" fill="#2C3E50"/>
+    <rect x="45" y="44" width="110" height="6" rx="1" fill="#2C3E50"/>
+    <ellipse cx="100" cy="110" rx="52" ry="44" fill="#F8B4B4"/>
+    <circle cx="84" cy="108" r="14" fill="none" stroke="#2C3E50" stroke-width="3"/>
+    <circle cx="116" cy="108" r="14" fill="none" stroke="#2C3E50" stroke-width="3"/>
+    <line x1="98" y1="108" x2="102" y2="108" stroke="#2C3E50" stroke-width="3"/>
+    <circle cx="84" cy="108" r="5" fill="#4A5568"/>
+    <circle cx="116" cy="108" r="5" fill="#4A5568"/>
+  </svg>
+  <header class="module-header">
+    <button class="back-btn" onclick="goToDashboard()">&#x2190; Back</button>
+    <span class="module-header-title" id="module-view-title"></span>
+  </header>
+  <div class="module-tabs" id="module-tabs"></div>
+  <div class="module-content" id="module-content"></div>
+</div>
+
+<!-- INSTRUCTOR VIEW -->
+<div id="instructor-view">
+  <header class="module-header">
+    <button class="back-btn" onclick="showLanding()">← Back</button>
+    <span class="module-header-title">Instructor Dashboard</span>
+  </header>
+  <div class="module-content">
+    <div class="content-card">
+      <h3>Student Progress Tracker</h3>
+      <p style="font-size:0.85rem;color:var(--text-medium);margin-bottom:16px;">All enrolled students and their module completion status.</p>
+      <div style="overflow-x:auto;">
+        <table class="instructor-table" id="instructor-table">
+          <thead><tr><th>Student Name</th><th>Student ID</th><th>M1: Slope</th><th>M2: y=mx+b</th><th>M3: Equations</th><th>Status</th></tr></thead>
+          <tbody id="instructor-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Celebration Overlay -->
+<div id="celebration-overlay">
+  <div class="celebration-card">
+    <svg width="80" height="80" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:4px;">
+      <circle cx="50" cy="50" r="45" fill="#E8F5E9" stroke="#4CAF50" stroke-width="3"/>
+      <polygon points="50,15 56,35 76,35 60,47 66,67 50,55 34,67 40,47 24,35 44,35" fill="#F4C430"/>
+      <polygon points="50,22 54,35 66,35 56,43 60,56 50,48 40,56 44,43 34,35 46,35" fill="#FFD54F"/>
+    </svg>
+    <h2 id="celebration-title">Module Complete!</h2>
+    <p id="celebration-text">You passed the checkpoint. Keep going!</p>
+    <button class="continue-btn" onclick="closeCelebration()">Continue</button>
+  </div>
+</div>
+
+<!-- Graduation Overlay -->
+<div id="graduation-overlay">
+  <div class="graduation-card">
+    <svg width="130" height="130" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:8px;">
+      <!-- Graduation Brain Mascot — large version -->
+      <!-- Flat mortarboard -->
+      <rect x="50" y="42" width="100" height="7" rx="2" fill="#2C3E50"/>
+      <rect x="38" y="36" width="124" height="7" rx="2" fill="#2C3E50"/>
+      <line x1="162" y1="40" x2="175" y2="62" stroke="#F4C430" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="176" cy="66" r="5" fill="#F4C430"/>
+      <!-- Brain -->
+      <ellipse cx="100" cy="108" rx="54" ry="46" fill="#F8B4B4"/>
+      <path d="M70,93 Q62,103 66,113 Q62,123 70,132" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+      <path d="M100,68 Q100,88 97,108 Q100,125 100,150" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+      <path d="M130,93 Q138,103 134,113 Q138,123 130,132" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+      <!-- Glasses -->
+      <circle cx="84" cy="106" r="15" fill="white" opacity="0.3"/>
+      <circle cx="116" cy="106" r="15" fill="white" opacity="0.3"/>
+      <circle cx="84" cy="106" r="15" fill="none" stroke="#2C3E50" stroke-width="3"/>
+      <circle cx="116" cy="106" r="15" fill="none" stroke="#2C3E50" stroke-width="3"/>
+      <line x1="99" y1="106" x2="101" y2="106" stroke="#2C3E50" stroke-width="3"/>
+      <line x1="69" y1="104" x2="58" y2="100" stroke="#2C3E50" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="131" y1="104" x2="142" y2="100" stroke="#2C3E50" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Pupils with shine -->
+      <circle cx="84" cy="106" r="5.5" fill="#4A5568"/>
+      <circle cx="116" cy="106" r="5.5" fill="#4A5568"/>
+      <circle cx="86" cy="104" r="2" fill="white"/>
+      <circle cx="118" cy="104" r="2" fill="white"/>
+      <!-- Big happy smile -->
+      <path d="M88,124 Q100,142 112,124" fill="none" stroke="#E8A0A0" stroke-width="3" stroke-linecap="round"/>
+      <!-- Blush cheeks -->
+      <ellipse cx="68" cy="118" rx="8" ry="5" fill="#FFB6C1" opacity="0.45"/>
+      <ellipse cx="132" cy="118" rx="8" ry="5" fill="#FFB6C1" opacity="0.45"/>
+    </svg>
+    <h1>CONGRATULATIONS, Graduate!</h1>
+    <div class="diploma-border">
+      <p style="font-size:0.7rem;color:var(--text-light);letter-spacing:3px;text-transform:uppercase;">Desmos Academy</p>
+      <p style="font-size:0.65rem;color:var(--text-light);margin:4px 0 12px;">Official Certificate of Completion</p>
+      <p class="grad-name" id="grad-name"></p>
+      <p style="font-size:0.85rem;color:var(--text-medium);">has successfully completed all required modules<br>and is hereby recognized as a</p>
+      <p style="font-size:1.2rem;font-weight:700;color:var(--deep-blue);margin-top:8px;">Desmos Calculator Graduate</p>
+      <p style="font-size:0.7rem;color:var(--text-light);margin-top:12px;font-style:italic;">Greiner Exploratory Arts Academy &bull; Dallas ISD</p>
+    </div>
+    <button class="continue-btn" onclick="closeGraduation()">Return to Dashboard</button>
+  </div>
+</div>
+<script>
+const MODULES=[
+{id:1,title:"Find Slope & Y-Intercept",teks:"TEKS 8.4C",desc:"Use the Desmos regression trick to find slope and y-intercept from tables, graphs, and word problems.",trick:"Trick #1",
+example:{staarImg:"images/m1_staar_graph.png",staarLabel:"2025 STAAR \u2013 8.4C (Q5)",
+staarText:"The graph of a linear relationship is shown on the coordinate grid.",staarDetail:"Two labeled points: (\u20136, 3) and (6, \u20131)",staarQuestion:"What are the slope and the y-intercept of the line?",
+staarChoices:["(A) slope = \u20133, y-intercept = 1","(B) slope = \u20131/3, y-intercept = 1","(C) slope = \u20133, y-intercept = 3","(D) slope = \u20131/3, y-intercept = 3"],
+steps:[
+{text:"Click + at the top left and add a table",img:"images/m1_step1_add_table.png"},
+{text:"Enter the two labeled points from the graph",img:"images/m1_step2_enter_points.png",detail:"Type (\u20136, 3) and (6, \u20131) into the x\u2081 and y\u2081 columns."},
+{text:"Type in your linear regression formula",img:"images/m1_step3_regression.png",detail:"Type: y\u2081 ~ mx\u2081 + b",highlight:"DON\u2019T FORGET THE 1\u2019s! It must be x\u2081 and y\u2081, not just x and y."},
+{text:"Locate m (slope) and b (y-intercept)",img:"images/m1_step4_results.png",detail:"Desmos shows: m = \u20130.3333... (slope) and b = 1 (y-intercept)."},
+{text:"What if your answer choices are fractions?",detail:"Test out each one! Desmos says slope = \u20130.3333... so try typing \u20131/3 in a new line. It equals \u20130.3333... so slope = \u20131/3 and y-intercept = 1. That\u2019s answer choice (B)!",highlight:"Type the fraction into Desmos to confirm: \u20131/3 = \u20130.3333... \u2713 Match! Answer: (B)"}
+]},
+practice:[
+{img:"images/m1_p1.png",type:"open",answer:"1/4",prompt:"What is the slope? (if answer is a fraction, use /)",accept:["1/4","0.25",".25"]},
+{img:"images/m1_p2.png",type:"mc",answer:"B",options:["A","B","C","D"],prompt:"Which statement is true?"},
+{img:"images/m1_p3.png",type:"mc",answer:"D",options:["A","B","C","D"],prompt:"What is the y-intercept?"},
+{img:"images/m1_p4.png",type:"mc",answer:"C",options:["A","B","C","D"],prompt:"Which statement best describes the slope?"},
+{img:"images/m1_p5.png",type:"mc",answer:"A",options:["A","B","C","D"],prompt:"What is the y-intercept?"},
+{img:"images/m1_p6.png",type:"mc",answer:"C",options:["A","B","C","D"],prompt:"How many bottles at the start?"}
+],
+checkpoint:[
+{question:"A graph shows a line passing through (\u22124, \u22123) and (4, \u22121). What is the slope?",options:["1/4","4","\u22121/4","2"],answer:0},
+{question:"A table shows: x = 4, y = 25 and x = 7, y = 34 and x = 12, y = 49. What is the y-intercept?",options:["9","13","3","15"],answer:1}
+]},
+
+{id:2,title:"Write y = mx + b",teks:"TEKS 8.5I",desc:"Use Desmos to write linear equations in slope-intercept form from ordered pairs, tables, and graphs.",trick:"Trick #2",
+example:{staarImg:"images/m2_staar_example.png",staarLabel:"2025 STAAR \u2013 8.5I",
+staarText:"A linear function passes through the ordered pairs (1, 2) and (5, 7).",staarQuestion:"Which equation best represents this linear function in slope-intercept form?",
+staarChoices:["(A) y = 5/4 x + 3/4","(B) y = 4/5 x + 6/5","(C) y = 5/4 x - 3/4","(D) y = 3/4 x + 5/4"],
+steps:[
+{text:"Click + and add a table",img:"images/m1_step1_add_table.png"},
+{text:"Enter your two ordered pairs",img:"images/m2_desmos_table.png",detail:"Enter (1, 2) and (5, 7) into the x₁ and y₁ columns."},
+{text:"Type the regression formula: y₁ ~ mx₁ + b",detail:"Same formula from Trick #1!"},
+{text:"Read m and b from the results",img:"images/m2_desmos_regression.png",detail:"Desmos gives you: m = 1.25 and b = 0.75. So the equation is y = 1.25x + 0.75. But wait — the answer choices use fractions, not decimals! Time to convert."},
+{text:"Convert decimals → fractions using Desmos!",img:"images/m2_fraction_convert.png",detail:"Here\u2019s the magic trick: type the decimal on a NEW line in Desmos all by itself. Type 0.75 and press Enter. Then look to the LEFT of the input box \u2014 you\u2019ll see a small button. Click it and Desmos converts your decimal into a fraction! 0.75 becomes 3/4.",highlight:"FRACTION SHORTCUT: Type decimal → click the button to the LEFT of the input box → fraction appears! 0.75 → 3/4 \u2713"},
+{text:"Convert BOTH m and b to fractions",detail:"Do this for both values:\n\u2022 Type 0.75, click the fraction button → 3/4 (that\u2019s your y-intercept b)\n\u2022 Type 1.25, click the fraction button → 5/4 (that\u2019s your slope m)\n\nNow build your equation: y = 5/4 x + 3/4",highlight:"Always convert BOTH slope and y-intercept — the answer choices might use fractions for either one!"},
+{text:"Match your equation to the answer choices",detail:"Your converted equation: y = 5/4 x + 3/4. Scan the choices:\n(A) y = 5/4 x + 3/4 \u2190 MATCH! \u2713\n(B) y = 4/5 x + 6/5 \u2190 nope\n(C) y = 5/4 x - 3/4 \u2190 close but wrong sign\n(D) y = 3/4 x + 5/4 \u2190 slope and intercept flipped",highlight:"PRO TIP: If you see fractions in the answer choices, that\u2019s your cue to use the decimal → fraction Desmos trick before picking your answer!"}
+]},
+practice:[
+{img:"images/m2_p1.png",type:"mc",answer:"D",options:["A","B","C","D"],prompt:"Which equation represents the function?"},
+{img:"images/m2_p2.png",type:"mc",answer:"A",options:["A","B","C","D"],prompt:"Which equation represents the total charge?"},
+{img:"images/m2_p3.png",type:"open",answer:"3/4",prompt:"What is the slope? (if answer is a fraction, use /)",accept:["3/4","0.75",".75"]},
+{img:"images/m2_p4.png",type:"mc",answer:"C",options:["A","B","C","D"],prompt:"Which equation represents the function?"}
+],
+checkpoint:[
+{question:"A linear function passes through (\u22122, 70) and (6, \u221250). Which equation represents the function?",options:["y = \u221215x + 40","y = \u22123/2 x + 4","y = \u221215x + 4","y = \u22123/2 x + 40"],answer:0},
+{question:"A linear relationship is shown in the table below.\n\n x │ y\n───┼───\n 2 │ 3\n 6 │ 11\n\nWhich equation represents y as a function of x?",options:["y = 2x \u2212 1","y = 2x + 1","y = 1/2 x + 2","y = 4x \u2212 5"],answer:0}
+]},
+
+{id:3,title:"Solve Equations by Graphing",teks:"TEKS 8.8C",desc:"Type each side of the equation as y = ___ in Desmos and find where the lines intersect.",trick:"Trick #3",
+example:{staarImg:"images/m3_staar_example1.png",staarLabel:"2025 STAAR \u2013 8.8C",
+staarText:"What value of x makes the equation true?",staarQuestion:"\u20136x + 8 = 2(x \u2013 12)",staarDetail:"Solve by graphing both sides in Desmos and finding where the lines intersect.",
+steps:[
+{text:"Identify the two sides of the equation",detail:"Split at the equals sign. For \u20136x + 8 = 2(x \u2013 12): Left side = \u20136x + 8, Right side = 2(x \u2013 12). Each side becomes its own line in Desmos."},
+{text:"Type Line 1: y = (left side)",img:"images/m3_desmos_step1.png",detail:"Type y = -6x + 8 in the first line of Desmos."},
+{text:"Type Line 2: y = (right side)",img:"images/m3_desmos_step2.png",detail:"Type y = 2(x - 12) in the second line. You should now see two lines on the graph."},
+{text:"ZOOM OUT until you can see BOTH lines crossing!",img:"images/m3_desmos_step3.png",detail:"This is the most important step. If you can\u2019t see where the lines cross, pinch out or click the \u2013 button to zoom out. Keep zooming until both lines AND their intersection point are visible on screen.",highlight:"KEY STRATEGY: Zoom WAY out first so you can see the full picture. Then zoom IN to the intersection point to click it precisely. The x-value at the intersection = your answer!"},
+{text:"Click the intersection point to get your answer",detail:"Once you can see where the lines cross, click directly on that point. Desmos will show the coordinates. The x-value is your answer!",highlight:"Intersection at (4, \u201316), so x = 4. That\u2019s your answer \u2014 easy STAAR points!"},
+{text:"For fractions: verify with Desmos",img:"images/m3_word_check.png",detail:"If the intersection gives a decimal like 140.8, type that decimal on a new line, then click the fraction button to the left of the input box. It converts 140.8 into 704/5 \u2014 that\u2019s your fraction answer!",highlight:"This trick turns hard algebra into easy graphing. Follow the steps carefully and meticulously \u2014 these are FREE points on the STAAR!"}
+]},
+practice:[
+{img:"images/m3_p1.png",type:"mc",answer:"C",options:["A","B","C","D"],prompt:"What was the cost of each ticket?"},
+{img:"images/m3_p2.png",type:"mc",answer:"D",options:["A","B","C","D"],prompt:"What value of x makes this equation true?"},
+{img:"images/m3_p3.png",type:"mc",answer:"A",options:["A","B","C","D"],prompt:"Based on the model, what is the value of x? (2x + 5 = −3x + 8)"},
+{img:"images/m3_p4.png",type:"mc",answer:"D",options:["A","B","C","D"],prompt:"What value of x makes this equation true?"}
+],
+checkpoint:[
+{question:"What value of x makes this equation true? 2x + 9 \u2212 4x = x \u2212 12",options:["7","\u221221","\u22121","3"],answer:0},
+{question:"What value of x makes this equation true? 5x \u2212 3 = 2(x + 6)",options:["3","\u22125","5","15"],answer:2}
+]},
+
+{id:4,title:"Proportional vs. Non-Proportional",teks:"TEKS 8.5F",desc:"Determine if a relationship is proportional by checking if b = 0.",trick:"Trick #4",locked:true},
+{id:5,title:"Direct Variation",teks:"TEKS 8.5E",desc:"Identify direct variation where y = kx (passes through origin).",trick:"Trick #5",locked:true}
+];
+
+const GRAD_REQ=3;
+let currentUser=null,currentModuleId=null,currentTab='example';
+
+// Inline SVG of the Desmos fraction button for use in tips
+var FRAC_BTN='<img src="images/desmos_fraction_btn.svg" alt="Desmos fraction button" style="display:block;max-width:200px;margin:8px 0 4px;border-radius:8px;">';
+var FRAC_BTN_INLINE='<img src="images/desmos_fraction_btn.svg" alt="fraction button" style="display:inline-block;max-width:140px;vertical-align:middle;margin:2px 4px;border-radius:6px;">';
+
+// Stacked fraction renderer — converts "5/4" patterns into vertical CSS fractions
+function frac(text){
+  if(!text) return text;
+  // Match optional negative sign + digits/decimals slash digits/decimals
+  // Patterns: 5/4, -1/3, −3/2, 1.25, etc.  Only convert slash fractions.
+  return text.replace(/([\u2212\-]?\d+)\s*\/\s*(\d+)/g, function(match,num,den){
+    var neg='', n=num;
+    if(n.charAt(0)==='\u2212'||n.charAt(0)==='-'){neg='<span class="frac-neg">\u2212</span>';n=n.substring(1);}
+    return neg+'<span class="frac"><span class="frac-num">'+n+'</span><span class="frac-bar"></span><span class="frac-den">'+den+'</span></span>';
+  });
+}
+
+/*  =============================================
+    ROSTER SYSTEM
+    =============================================
+    Edit the ROSTER object below to pre-load your students.
+    Format: "studentID": "First Last"
+    Students whose ID is in the roster get their name auto-filled.
+    Students NOT in the roster can still log in by typing both fields.
+    ============================================= */
+const ROSTER = {
+  // Example entries - replace with your actual student IDs and names:
+  // "123456": "Maria Garcia-Lopez",
+  // "789012": "James Washington III",
+};
+
+function titleCase(str) {
+  return str.replace(/\w\S*/g, function(txt){
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+function checkRoster() {
+  let id = document.getElementById('student-id').value.trim();
+  let nameField = document.getElementById('student-name');
+  let matchMsg = document.getElementById('roster-match');
+  if (ROSTER[id]) {
+    nameField.value = ROSTER[id];
+    nameField.disabled = true;
+    nameField.style.background = '#E8F5E9';
+    matchMsg.textContent = 'Matched from class roster';
+    matchMsg.style.display = 'block';
+  } else {
+    nameField.disabled = false;
+    nameField.style.background = '';
+    matchMsg.style.display = 'none';
+  }
+}
+
+/*  =============================================
+    GOOGLE SHEETS BACKEND
+    =============================================
+    Paste your Google Apps Script Web App URL below.
+    See GOOGLE_APPS_SCRIPT.js for setup instructions.
+    Leave blank to use localStorage only (offline mode).
+    ============================================= */
+const SHEETS_API_URL = 'https://script.google.com/macros/s/AKfycbw-mZ5KwuJ8qd5F3eHjy2rBjOoE_AVksrW1av76L-BEgg92I9MWaKyF8FFKNMQ5q9k/exec';
+
+// Fire-and-forget POST to Google Sheets (non-blocking)
+function sheetsPost(payload) {
+  if (!SHEETS_API_URL) return;
+  try {
+    fetch(SHEETS_API_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    }).catch(function(){});
+  } catch(e) {}
+}
+
+// Load student progress from Google Sheets (returns promise)
+function sheetsGetProgress(studentId) {
+  if (!SHEETS_API_URL) return Promise.resolve(null);
+  return fetch(SHEETS_API_URL + '?action=get_progress&studentId=' + encodeURIComponent(studentId))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status === 'ok') return data.progress;
+      return null;
+    })
+    .catch(function() { return null; });
+}
+
+// Merge cloud progress into local storage
+function mergeCloudProgress(cloudData) {
+  if (!cloudData || !currentUser) return;
+  updateUserData(function(d) {
+    // Sync checkpoint passes from cloud
+    if (cloudData.m1_checkpoint === 'PASSED') d.checkpoints.m1 = 'passed';
+    if (cloudData.m2_checkpoint === 'PASSED') d.checkpoints.m2 = 'passed';
+    if (cloudData.m3_checkpoint === 'PASSED') d.checkpoints.m3 = 'passed';
+    // Sync practice counts (take the higher value)
+    var m1c = d.practice['m1_count'] || 0;
+    var m2c = d.practice['m2_count'] || 0;
+    var m3c = d.practice['m3_count'] || 0;
+    if (cloudData.m1_practice > m1c) d.practice['m1_count'] = cloudData.m1_practice;
+    if (cloudData.m2_practice > m2c) d.practice['m2_count'] = cloudData.m2_practice;
+    if (cloudData.m3_practice > m3c) d.practice['m3_count'] = cloudData.m3_practice;
+  });
+}
+
+function getStorage(){try{return JSON.parse(localStorage.getItem('desmos_academy')||'{}')}catch(e){return{}}}
+function saveStorage(d){localStorage.setItem('desmos_academy',JSON.stringify(d))}
+function getUserData(){let s=getStorage();if(!currentUser)return null;if(!s[currentUser.id])s[currentUser.id]={name:currentUser.name,modules:{},practice:{},checkpoints:{},failLog:[]},saveStorage(s);return s[currentUser.id]}
+function updateUserData(fn){let s=getStorage();if(!currentUser)return;if(!s[currentUser.id])s[currentUser.id]={name:currentUser.name,modules:{},practice:{},checkpoints:{},failLog:[]};fn(s[currentUser.id]);saveStorage(s)}
+
+function studentLogin(){
+  let id=document.getElementById('student-id').value.trim();
+  let rawName=document.getElementById('student-name').value.trim();
+  if(!id||!rawName){document.getElementById('login-error').style.display='block';return}
+  document.getElementById('login-error').style.display='none';
+  // Use roster name if available, otherwise auto-capitalize what they typed
+  let name = ROSTER[id] || titleCase(rawName);
+  currentUser={id,name};getUserData();
+  // Always update stored name to the clean version
+  updateUserData(d=>{d.name=name});
+  // Send login to Google Sheets
+  sheetsPost({ action: 'login', studentId: id, studentName: name });
+  // Load cloud progress and merge, then refresh dashboard
+  sheetsGetProgress(id).then(function(cloud) {
+    if (cloud) { mergeCloudProgress(cloud); }
+    renderModules();
+  });
+  showDashboard();
+}
+function showInstructorLogin(){let pw=prompt("Enter instructor password:");if(pw==="linam2026")showInstructorView();else if(pw!==null)alert("Incorrect password.")}
+function logout(){currentUser=null;showLanding()}
+function showLanding(){document.getElementById('landing-page').style.display='block';document.getElementById('dashboard').style.display='none';document.getElementById('module-view').style.display='none';document.getElementById('instructor-view').style.display='none'}
+function showDashboard(){document.getElementById('landing-page').style.display='none';document.getElementById('dashboard').style.display='block';document.getElementById('module-view').style.display='none';document.getElementById('instructor-view').style.display='none';document.getElementById('display-name').textContent=currentUser.name;renderModules()}
+function goToDashboard(){showDashboard()}
+
+function getCompletedCount(){let d=getUserData();if(!d)return 0;let c=0;for(let i=1;i<=GRAD_REQ;i++)if(d.checkpoints['m'+i]==='passed')c++;return c}
+function isModuleUnlocked(id){if(id===1)return true;let mod=MODULES.find(m=>m.id===id);if(mod&&mod.locked)return false;let d=getUserData();return d&&d.checkpoints['m'+(id-1)]==='passed'}
+
+function renderModules(){
+  let grid=document.getElementById('modules-grid'),d=getUserData(),completed=getCompletedCount();
+  document.getElementById('progress-text').textContent=completed+' / '+GRAD_REQ+' Modules Complete';
+  document.getElementById('progress-fill').style.width=((completed/GRAD_REQ)*100)+'%';
+  let h='';
+  MODULES.forEach(mod=>{
+    let unlocked=isModuleUnlocked(mod.id),passed=d&&d.checkpoints['m'+mod.id]==='passed';
+    let hasStarted=d&&d.practice['m'+mod.id+'_count'];
+    let cls='module-card',status='';
+    if(mod.locked&&!unlocked){cls+=' locked';status='<span class="module-status not-started">Coming Soon</span>'}
+    else if(!unlocked){cls+=' locked';status='<span class="module-status not-started">Locked</span>'}
+    else if(passed){cls+=' completed';status='<span class="module-status complete">Complete ✅</span>'}
+    else if(hasStarted){cls+=' current';status='<span class="module-status in-progress">In Progress</span>'}
+    else{cls+=' current';status='<span class="module-status not-started">Not Started</span>'}
+    h+='<div class="'+cls+'" onclick="'+(unlocked?'openModule('+mod.id+')':'')+'">';
+    h+='<div class="module-number">MODULE '+mod.id+' • '+mod.trick+'</div>';
+    h+='<div class="module-title">'+mod.title+'</div>';
+    h+='<div class="module-teks">'+mod.teks+'</div>';
+    h+='<div class="module-desc">'+mod.desc+'</div>'+status+'</div>';
+  });
+  grid.innerHTML=h;
+}
+
+function openModule(id){
+  let mod=MODULES.find(m=>m.id===id);if(!mod||mod.locked)return;
+  currentModuleId=id;currentTab='example';
+  document.getElementById('landing-page').style.display='none';
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('module-view').style.display='block';
+  document.getElementById('module-view-title').textContent='Module '+mod.id+': '+mod.title;
+  renderModuleTabs();renderModuleContent();
+}
+
+function renderModuleTabs(){
+  let mod=MODULES.find(m=>m.id===currentModuleId),d=getUserData();
+  let cpUnlocked=d&&(d.practice['m'+mod.id+'_count']||0)>=(mod.practice?mod.practice.length:0);
+  let h='';
+  h+='<button class="module-tab '+(currentTab==='example'?'active':'')+'" onclick="switchTab(\'example\')">Example</button>';
+  h+='<button class="module-tab '+(currentTab==='practice'?'active':'')+'" onclick="switchTab(\'practice\')">Practice</button>';
+  h+='<button class="module-tab '+(currentTab==='checkpoint'?'active':'')+' '+(!cpUnlocked?'tab-locked':'')+'" onclick="'+(cpUnlocked?"switchTab(\'checkpoint\')":'')+'">\u2705 Check Your Understanding'+(!cpUnlocked?' \uD83D\uDD12':'')+'</button>';
+  document.getElementById('module-tabs').innerHTML=h;
+}
+function switchTab(t){currentTab=t;renderModuleTabs();renderModuleContent()}
+
+function renderModuleContent(){
+  let mod=MODULES.find(m=>m.id===currentModuleId),c=document.getElementById('module-content');
+  if(currentTab==='example')c.innerHTML=renderExample(mod);
+  else if(currentTab==='practice')c.innerHTML=renderPractice(mod);
+  else if(currentTab==='checkpoint')c.innerHTML=renderCheckpoint(mod);
+}
+
+function renderExample(mod){
+  let ex=mod.example,sh='';
+  ex.steps.forEach(function(s,i){
+    sh+='<div class="step-item"><div class="step-number">'+(i+1)+'</div><div class="step-content">';
+    sh+='<div class="step-text">'+frac(s.text)+'</div>';
+    if(s.detail){sh+='<div class="step-detail">'+frac(s.detail)+'</div>';if(s.detail.indexOf('fraction button')!==-1)sh+=FRAC_BTN;}
+    if(s.img)sh+='<img src="'+s.img+'" alt="Step '+(i+1)+'" loading="lazy">';
+    if(s.highlight)sh+='<div class="step-highlight">'+frac(s.highlight)+'</div>';
+    sh+='</div></div>';
+  });
+  // Build STAAR question side - typed out large text + image
+  var sq='<span class="staar-badge">'+ex.staarLabel+'</span>';
+  if(ex.staarText){
+    sq+='<p style="font-size:1.05rem;color:var(--text-dark);margin:16px 0 12px;line-height:1.7;font-weight:500;">'+ex.staarText+'</p>';
+  }
+  sq+='<img src="'+ex.staarImg+'" alt="STAAR Question" style="margin:12px 0;">';
+  if(ex.staarDetail){
+    sq+='<p style="font-size:0.92rem;color:var(--text-medium);margin:8px 0;font-style:italic;">'+ex.staarDetail+'</p>';
+  }
+  if(ex.staarQuestion){
+    sq+='<p style="font-size:1.1rem;color:var(--text-dark);font-weight:700;margin:16px 0 12px;line-height:1.6;">'+ex.staarQuestion+'</p>';
+  }
+  if(ex.staarChoices){
+    sq+='<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">';
+    ex.staarChoices.forEach(function(c){
+      sq+='<div style="padding:10px 16px;background:white;border:2px solid #E8EDF2;border-radius:8px;font-size:0.95rem;color:var(--text-dark);font-weight:500;">'+frac(c)+'</div>';
+    });
+    sq+='</div>';
+  }
+  return '<div class="content-card"><div class="trick-header"><span class="desmos-label">DESMOS </span><span class="trick-title">'+mod.trick+' \u2013 '+mod.title+'</span></div><div class="example-layout"><div class="staar-side">'+sq+'</div><div class="desmos-side">'+sh+'</div></div></div>';
+}
+
+function renderPractice(mod){
+  let d=getUserData();
+  // Build the sticky steps sidebar
+  var sb='<div class="steps-sidebar"><div class="sidebar-card">';
+  sb+='<h4><svg width="18" height="18" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polygon points="50,15 10,35 50,27 90,35" fill="#2E5090"/><rect x="20" y="27" width="60" height="6" fill="#2E5090" rx="2"/><circle cx="50" cy="60" r="15" fill="#F4C430" opacity="0.4"/><polygon points="50,48 53,57 62,57 55,63 57,72 50,66 43,72 45,63 38,57 47,57" fill="#F4C430"/></svg> '+mod.trick+' Steps</h4>';
+  if(mod.example && mod.example.steps){
+    mod.example.steps.forEach(function(s,i){
+      sb+='<div class="sidebar-step"><span class="sidebar-step-num">'+(i+1)+'</span><span>'+frac(s.text)+(s.highlight?' <strong style="color:var(--orange);">'+frac(s.highlight)+'</strong>':'')+'</span></div>';
+    });
+  }
+  sb+='</div>';
+  // Fraction conversion tip card — universal across all modules
+  sb+='<div class="sidebar-card" style="margin-top:14px;background:linear-gradient(135deg,#FFF8E7,#FFF0D0);border:2px solid rgba(244,196,48,0.4);">';
+  sb+='<h4 style="color:#B8860B;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#B8860B" stroke-width="2"/><path d="M12 7v6M12 16v1" stroke="#B8860B" stroke-width="2" stroke-linecap="round"/></svg> FRACTION TIP</h4>';
+  sb+='<div class="sidebar-step" style="border-bottom:none;font-size:0.73rem;line-height:1.6;">';
+  sb+='<span>See fractions in the answer choices? Type the decimal on a <strong>new line</strong> in Desmos, then click the <strong>fraction button</strong> to the left of the input box!<br>'+FRAC_BTN_INLINE+'<br><strong style="color:#B8860B;">0.75 → '+frac('3/4')+' &nbsp;|&nbsp; 1.25 → '+frac('5/4')+'</strong></span>';
+  sb+='</div></div>';
+  sb+='</div>';
+
+  // Build the practice problems
+  var h='<div class="practice-wrapper">';
+  h+='<div class="practice-main">';
+  h+='<div class="content-card"><h3>Practice Opportunities</h3>';
+  h+='<p style="font-size:0.85rem;color:var(--text-medium);margin-bottom:20px;">Complete all '+mod.practice.length+' problems to unlock the checkpoint. Use the Desmos calculator on the right!</p>';
+  h+='<div class="practice-grid">';
+  mod.practice.forEach(function(p,i){
+    var key='m'+mod.id+'_p'+i,done=d&&d.practice[key]==='correct';
+    h+='<div class="practice-item '+(done?'completed-practice':'')+'" id="practice-'+i+'">';
+    h+='<div class="practice-item-header"><span class="practice-number">Problem '+(i+1)+'</span>';
+    h+='<span class="practice-status-icon">'+(done?'\u2705':'\u2B55')+'</span></div>';
+    // Side-by-side: question on left, Desmos on right
+    h+='<div class="practice-row">';
+    h+='<div class="practice-question-side">';
+    h+='<img src="'+p.img+'" alt="Practice '+(i+1)+'">';
+    h+='<p style="font-size:0.85rem;font-weight:600;margin-bottom:10px;">'+p.prompt+'</p>';
+    h+='<div class="answer-section">';
+    if(p.type==='mc'){h+='<select id="answer-'+i+'" '+(done?'disabled':'')+'><option value="">Select...</option>';p.options.forEach(function(o){h+='<option value="'+o+'">'+o+'</option>'});h+='</select>'}
+    else{h+='<input type="text" id="answer-'+i+'" placeholder="Type your answer..." '+(done?'disabled':'')+'>'}
+    if(!done)h+='<button class="check-btn" onclick="checkPractice('+mod.id+','+i+')">Check</button>';
+    h+='</div><div class="answer-feedback" id="feedback-'+i+'"></div>';
+    h+='</div>';
+    // Desmos calculator panel — taller for Module 3 (intersection finding)
+    var tallClass = (mod.id === 3) ? ' desmos-calc-tall' : '';
+    h+='<div class="desmos-calc-side'+tallClass+'">';
+    h+='<div class="desmos-label-bar"><svg width="16" height="16" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="48" width="100" height="5" rx="2" fill="white" opacity="0.8"/><ellipse cx="100" cy="110" rx="48" ry="40" fill="#F8B4B4" opacity="0.9"/><circle cx="85" cy="108" r="11" fill="none" stroke="white" stroke-width="2.5"/><circle cx="115" cy="108" r="11" fill="none" stroke="white" stroke-width="2.5"/><line x1="96" y1="108" x2="104" y2="108" stroke="white" stroke-width="2.5"/></svg> DESMOS TEXAS GRAPHING</div>';
+    h+='<iframe src="https://www.desmos.com/testing/texas/graphing" title="Desmos Texas Graphing Calculator" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>';
+    h+='</div>';
+    h+='</div>'; // close practice-row
+    h+='</div>'; // close practice-item
+  });
+  h+='</div></div>'; // close practice-grid and content-card
+  h+='</div>'; // close practice-main
+  h+=sb; // add sticky sidebar
+  h+='</div>'; // close practice-wrapper
+  return h;
+}
+
+function checkPractice(mid,idx){
+  let mod=MODULES.find(m=>m.id===mid),p=mod.practice[idx],el=document.getElementById('answer-'+idx),fb=document.getElementById('feedback-'+idx);
+  let ans=el.value.trim(),correct=false;
+  if(p.type==='mc')correct=ans.toUpperCase()===p.answer;
+  else correct=p.accept.some(a=>ans.toLowerCase()===a.toLowerCase());
+  if(correct){
+    fb.className='answer-feedback correct';fb.textContent='✅ Correct! Great work.';fb.style.display='block';
+    el.disabled=true;let btn=el.parentElement.querySelector('.check-btn');if(btn)btn.remove();
+    document.getElementById('practice-'+idx).classList.add('completed-practice');
+    document.getElementById('practice-'+idx).querySelector('.practice-status-icon').textContent='✅';
+    updateUserData(d=>{d.practice['m'+mid+'_p'+idx]='correct';d.practice['m'+mid+'_count']=(d.practice['m'+mid+'_count']||0)+1});
+    // Log practice completion to Google Sheets
+    sheetsPost({ action: 'practice_complete', studentId: currentUser.id, studentName: currentUser.name, moduleId: mid, problemIndex: idx });
+    renderModuleTabs();
+  }else{fb.className='answer-feedback incorrect';fb.textContent='❌ Try again! Use your Desmos calculator.';fb.style.display='block'}
+}
+
+function renderCheckpoint(mod){
+  let d=getUserData(),passed=d&&d.checkpoints['m'+mod.id]==='passed';
+  if(passed)return '<div class="checkpoint-card"><h3>\u2705 Checkpoint Passed!</h3><p style="margin-top:12px;font-size:0.92rem;">You have already passed this checkpoint. Well done!</p></div>';
+  let h='<div class="checkpoint-card"><h3>Check Your Understanding</h3><p class="checkpoint-desc">Answer ALL questions correctly to pass. Use your Desmos calculator below each question!</p>';
+  h+='<div style="background:linear-gradient(135deg,#FFF8E7,#FFF0D0);border:2px solid rgba(244,196,48,0.35);border-radius:10px;padding:10px 16px;margin-bottom:18px;font-size:0.82rem;color:#8B6914;display:flex;align-items:center;gap:10px;">';
+  h+='<span style="font-size:1.2rem;">💡</span><span><strong>Fraction Tip:</strong> If a decimal shows up, type it on a <strong>new line</strong> in Desmos, then click the <strong>fraction button</strong> to the left of the input box! '+FRAC_BTN_INLINE+' (e.g. 0.75 → '+frac('3/4')+')</span></div>';
+  mod.checkpoint.forEach(function(q,i){
+    h+='<div class="checkpoint-question" id="cq-'+i+'">';
+    h+='<div class="practice-row" style="margin-bottom:16px;">';
+    // Question side
+    h+='<div class="practice-question-side">';
+    if(q.img)h+='<img src="'+q.img+'" alt="Question">';
+    h+='<p style="font-weight:600;margin-bottom:12px;font-size:1rem;">'+frac(q.question)+'</p>';
+    h+='<div class="checkpoint-options">';
+    q.options.forEach(function(opt,j){h+='<div class="checkpoint-option" data-q="'+i+'" data-a="'+j+'" onclick="selCP(this,'+i+','+j+')"><span style="font-weight:700;color:var(--deep-blue);">'+String.fromCharCode(65+j)+'.</span> '+frac(opt)+'</div>'});
+    h+='</div>';
+    h+='</div>';
+    // Desmos calculator side — taller for Module 3
+    var cpTallClass = (mod.id === 3) ? ' desmos-calc-tall' : '';
+    h+='<div class="desmos-calc-side'+cpTallClass+'">';
+    h+='<div class="desmos-label-bar"><svg width="16" height="16" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="48" width="100" height="5" rx="2" fill="white" opacity="0.8"/><ellipse cx="100" cy="110" rx="48" ry="40" fill="#F8B4B4" opacity="0.9"/><circle cx="85" cy="108" r="11" fill="none" stroke="white" stroke-width="2.5"/><circle cx="115" cy="108" r="11" fill="none" stroke="white" stroke-width="2.5"/><line x1="96" y1="108" x2="104" y2="108" stroke="white" stroke-width="2.5"/></svg> DESMOS TEXAS GRAPHING</div>';
+    h+='<iframe src="https://www.desmos.com/testing/texas/graphing" title="Desmos Texas Graphing Calculator" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>';
+    h+='</div>';
+    h+='</div>'; // close practice-row
+    h+='</div>'; // close checkpoint-question
+  });
+  h+='<button class="submit-checkpoint-btn" onclick="submitCP('+mod.id+')">Submit Answers</button><div class="checkpoint-result" id="checkpoint-result"></div></div>';
+  return h;
+}
+
+let selAnswers={};
+function selCP(el,q,a){document.querySelectorAll('.checkpoint-option[data-q="'+q+'"]').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');selAnswers[q]=a}
+
+function submitCP(mid){
+  let mod=MODULES.find(m=>m.id===mid),ok=true;
+  mod.checkpoint.forEach((q,i)=>{
+    let sel=selAnswers[i],opts=document.querySelectorAll('.checkpoint-option[data-q="'+i+'"]');
+    if(sel!==q.answer){ok=false;opts.forEach((o,j)=>{o.classList.remove('selected','correct-answer','wrong-answer');if(j===sel)o.classList.add('wrong-answer')})}
+    else{opts.forEach((o,j)=>{o.classList.remove('selected','correct-answer','wrong-answer');if(j===q.answer)o.classList.add('correct-answer')})}
+  });
+  let r=document.getElementById('checkpoint-result');
+  if(ok){
+    updateUserData(d=>{d.checkpoints['m'+mid]='passed'});
+    // Log checkpoint pass to Google Sheets
+    sheetsPost({ action: 'checkpoint_pass', studentId: currentUser.id, studentName: currentUser.name, moduleId: mid });
+    r.className='checkpoint-result passed';r.textContent='✅ PASSED! You mastered this module!';r.style.display='block';
+    setTimeout(()=>{let c=getCompletedCount();if(c>=GRAD_REQ)showGrad();else showCeleb(mid)},800);
+  }else{
+    updateUserData(d=>{d.failLog.push({module:mid,time:new Date().toISOString()})});
+    // Log checkpoint fail to Google Sheets
+    sheetsPost({ action: 'checkpoint_fail', studentId: currentUser.id, studentName: currentUser.name, moduleId: mid });
+    r.className='checkpoint-result failed';r.textContent='❌ Not quite. Review the answers and try again!';r.style.display='block';
+    selAnswers={};setTimeout(()=>{r.style.display='none';renderModuleContent()},2250);
+  }
+}
+
+function showCeleb(mid){let mod=MODULES.find(m=>m.id===mid);document.getElementById('celebration-title').textContent='Module '+mod.id+' Complete!';document.getElementById('celebration-text').textContent='You passed '+mod.title+'. Keep going, '+currentUser.name+'!';document.getElementById('celebration-overlay').classList.add('show');confetti()}
+function closeCelebration(){document.getElementById('celebration-overlay').classList.remove('show');showDashboard()}
+function showGrad(){document.getElementById('grad-name').textContent=currentUser.name;document.getElementById('graduation-overlay').classList.add('show');confetti(60)}
+function closeGraduation(){document.getElementById('graduation-overlay').classList.remove('show');showDashboard()}
+function confetti(n){n=n||30;let colors=['#F4C430','#4CAF50','#87CEEB','#FF8C42','#B39DDB','#E74C3C','#2E5090'];for(let i=0;i<n;i++){let p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];p.style.animationDuration=(2+Math.random()*3)+'s';p.style.animationDelay=Math.random()*1.5+'s';p.style.borderRadius=Math.random()>0.5?'50%':'2px';p.style.width=(6+Math.random()*8)+'px';p.style.height=(6+Math.random()*8)+'px';document.body.appendChild(p);setTimeout(()=>p.remove(),6000)}}
+
+function showInstructorView(){
+  document.getElementById('landing-page').style.display='none';document.getElementById('instructor-view').style.display='block';
+  let s=getStorage(),tb=document.getElementById('instructor-tbody'),h='';
+  Object.keys(s).forEach(id=>{let st=s[id],m1=st.checkpoints&&st.checkpoints.m1==='passed'?'✅':'⭕',m2=st.checkpoints&&st.checkpoints.m2==='passed'?'✅':'⭕',m3=st.checkpoints&&st.checkpoints.m3==='passed'?'✅':'⭕';
+  let done=st.checkpoints&&st.checkpoints.m1==='passed'&&st.checkpoints.m2==='passed'&&st.checkpoints.m3==='passed';
+  h+='<tr><td style="font-weight:600;'+(done?'color:var(--fresh-green)':'')+'">'+st.name+'</td><td>'+id+'</td><td style="text-align:center">'+m1+'</td><td style="text-align:center">'+m2+'</td><td style="text-align:center">'+m3+'</td><td>'+(done?'<span style="color:var(--fresh-green);font-weight:700">GRADUATED</span>':'<span style="color:var(--text-light)">In Progress</span>')+'</td></tr>'});
+  if(!h)h='<tr><td colspan="6" style="text-align:center;color:var(--text-light);padding:24px;">No students yet.</td></tr>';
+  tb.innerHTML=h;
+}
+
+showLanding();
+</script>
+</body></html>

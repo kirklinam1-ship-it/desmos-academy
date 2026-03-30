@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Desmos Academy!</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Comfortaa',sans-serif;height:100vh;display:flex;align-items:center;justify-content:center;
+overflow:hidden;position:relative;cursor:default;}
+
+/* Animated sky gradient that slowly shifts */
+@keyframes skyShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+body{background:linear-gradient(270deg,#D6EEFF,#E8F4FD,#FFF8E7,#F0F7E8,#F5F0FA,#D6EEFF);
+background-size:600% 600%;animation:skyShift 20s ease infinite;}
+
+/* Sun — pulses gently */
+@keyframes sunPulse{0%,100%{transform:translate(-50%,-30%) scale(1);opacity:.13}50%{transform:translate(-50%,-30%) scale(1.15);opacity:.2}}
+body::before{content:'';position:fixed;top:0;left:50%;width:500px;height:500px;border-radius:50%;
+background:radial-gradient(circle,rgba(244,196,48,0.35),transparent 65%);
+animation:sunPulse 6s ease-in-out infinite;pointer-events:none;z-index:0;}
+
+/* Campus silhouette */
+body::after{content:'';position:fixed;bottom:0;left:0;right:0;height:80px;pointer-events:none;z-index:0;
+background:linear-gradient(0deg,rgba(46,80,144,0.07) 50px,transparent 50px),
+linear-gradient(0deg,rgba(46,80,144,0.05) 35px,transparent 35px),
+linear-gradient(0deg,rgba(46,80,144,0.03) 14px,transparent 14px);
+background-size:70px 80px,180px 80px,100% 80px;
+background-position:18% bottom,55% bottom,center bottom;background-repeat:no-repeat,no-repeat,repeat-x;}
+
+/* Particle canvas behind everything */
+canvas#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+/* Card — subtle float */
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.card{position:relative;z-index:2;max-width:760px;width:92%;display:flex;align-items:center;gap:32px;
+background:rgba(255,255,255,0.88);backdrop-filter:blur(12px);border-radius:22px;padding:32px 40px;
+box-shadow:0 8px 50px rgba(46,80,144,0.1),0 0 80px rgba(135,206,235,0.08);
+border:2px solid rgba(135,206,235,0.18);animation:cardFloat 5s ease-in-out infinite;}
+.card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+width:50px;height:3px;background:linear-gradient(90deg,#F4C430,#FF8C42);border-radius:0 0 3px 3px;}
+
+/* Mascot — breathing animation */
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0)}30%{transform:scale(1.04) rotate(1deg)}60%{transform:scale(0.98) rotate(-1deg)}}
+.mascot{flex-shrink:0;width:120px;height:120px;animation:breathe 4s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(248,180,180,0.3));}
+
+/* Text side */
+.text{flex:1;text-align:left;}
+
+/* Title — shimmering gradient */
+@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.title{font-size:1.55rem;font-weight:700;line-height:1.25;margin-bottom:5px;
+background:linear-gradient(135deg,#2E5090,#87CEEB,#B39DDB,#2E5090);background-size:300% 300%;
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+animation:shimmer 6s ease infinite;}
+
+/* Badge — glowing pulse */
+@keyframes badgePulse{0%,100%{box-shadow:0 0 8px rgba(244,196,48,0.3)}50%{box-shadow:0 0 20px rgba(244,196,48,0.6)}}
+.badge{display:inline-block;background:linear-gradient(135deg,#F4C430,#FF8C42);color:#fff;
+font-size:.56rem;font-weight:700;padding:3px 14px;border-radius:14px;letter-spacing:2.5px;
+text-transform:uppercase;margin-bottom:10px;animation:badgePulse 2.5s ease-in-out infinite;}
+
+.msg{font-size:.78rem;color:#5A6B7D;line-height:1.7;font-weight:500;margin-bottom:10px;}
+.msg strong{color:#2E5090;}
+
+/* Bookmark tip with wiggling star */
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(12deg)}75%{transform:rotate(-12deg)}}
+.bm{display:inline-flex;align-items:center;gap:6px;font-size:.67rem;color:#8B6914;font-weight:600;}
+.bm span{font-size:1.1rem;display:inline-block;animation:wiggle 1.5s ease-in-out infinite;}
+
+/* Mouse trail sparkle effect — handled by JS */
+
+/* Confetti */
+@keyframes fall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(105vh) rotate(700deg);opacity:0}}
+.cf{position:fixed;top:-10px;z-index:3;pointer-events:none;animation:fall linear forwards;}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="card" id="card">
+  <div class="mascot">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <rect x="55" y="48" width="90" height="6" rx="2" fill="#2C3E50"/>
+      <rect x="45" y="44" width="110" height="6" rx="1" fill="#2C3E50"/>
+      <line x1="155" y1="47" x2="165" y2="65" stroke="#F4C430" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="166" cy="68" r="4" fill="#F4C430"/>
+      <ellipse cx="100" cy="110" rx="52" ry="44" fill="#F8B4B4"/>
+      <path d="M72,95 Q64,105 68,115 Q64,125 72,132" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+      <path d="M100,72 Q100,90 97,110 Q100,125 100,148" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+      <path d="M128,95 Q136,105 132,115 Q136,125 128,132" fill="none" stroke="#E8A0A0" stroke-width="2.5"/>
+      <circle cx="84" cy="108" r="14" fill="white" opacity="0.3"/>
+      <circle cx="116" cy="108" r="14" fill="white" opacity="0.3"/>
+      <circle cx="84" cy="108" r="14" fill="none" stroke="#2C3E50" stroke-width="3"/>
+      <circle cx="116" cy="108" r="14" fill="none" stroke="#2C3E50" stroke-width="3"/>
+      <line x1="98" y1="108" x2="102" y2="108" stroke="#2C3E50" stroke-width="3"/>
+      <line x1="70" y1="106" x2="60" y2="102" stroke="#2C3E50" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="130" y1="106" x2="140" y2="102" stroke="#2C3E50" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="84" cy="108" r="5" fill="#4A5568"/>
+      <circle cx="116" cy="108" r="5" fill="#4A5568"/>
+      <circle cx="86" cy="106" r="2" fill="white"/>
+      <circle cx="118" cy="106" r="2" fill="white"/>
+      <path d="M90,125 Q100,138 110,125" fill="none" stroke="#E8A0A0" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="70" cy="118" rx="8" ry="5" fill="#FFB6C1" opacity="0.4"/>
+      <ellipse cx="130" cy="118" rx="8" ry="5" fill="#FFB6C1" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="text">
+    <h1 class="title">Welcome to Desmos Academy</h1>
+    <div class="badge">Now Enrolling</div>
+    <p class="msg">Your chance to master the <strong>Desmos calculator</strong> and walk into the <strong>STAAR</strong> ready to earn every point. Real questions. Real tricks. You got this.</p>
+    <div class="bm"><span>&#11088;</span> Bookmark it — click the star in your address bar!</div>
+  </div>
+</div>
+
+<script>
+// === FLOATING PARTICLES (stars, circles, math symbols) ===
+(function(){
+  var cv=document.getElementById('particles'),ctx=cv.getContext('2d');
+  function resize(){cv.width=innerWidth;cv.height=innerHeight}
+  resize();window.addEventListener('resize',resize);
+
+  var symbols=['\u2605','\u2726','+','\u00F7','\u03C0','\u221A','x','\u2022'];
+  var colors=['#F4C430','#87CEEB','#B39DDB','#FF8C42','#4CAF50','#E74C3C'];
+  var particles=[];
+  for(var i=0;i<45;i++){
+    particles.push({
+      x:Math.random()*cv.width,y:Math.random()*cv.height,
+      vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
+      s:symbols[Math.floor(Math.random()*symbols.length)],
+      c:colors[Math.floor(Math.random()*colors.length)],
+      sz:8+Math.random()*14,a:.15+Math.random()*.3,
+      rot:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.02
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    particles.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;
+      if(p.x<-20)p.x=cv.width+20;if(p.x>cv.width+20)p.x=-20;
+      if(p.y<-20)p.y=cv.height+20;if(p.y>cv.height+20)p.y=-20;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.globalAlpha=p.a;ctx.fillStyle=p.c;
+      ctx.font=p.sz+'px Comfortaa,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(p.s,0,0);ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// === MOUSE TRAIL SPARKLES ===
+(function(){
+  var trail=[];
+  document.addEventListener('mousemove',function(e){
+    for(var i=0;i<2;i++){
+      trail.push({x:e.clientX+(Math.random()-0.5)*20,y:e.clientY+(Math.random()-0.5)*20,
+        life:1,c:['#F4C430','#87CEEB','#FF8C42','#B39DDB'][Math.floor(Math.random()*4)]});
+    }
+  });
+  var cv2=document.createElement('canvas');cv2.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;z-index:4;pointer-events:none;';
+  document.body.appendChild(cv2);var ctx2=cv2.getContext('2d');
+  function rs(){cv2.width=innerWidth;cv2.height=innerHeight}
+  rs();window.addEventListener('resize',rs);
+  function anim(){
+    ctx2.clearRect(0,0,cv2.width,cv2.height);
+    for(var i=trail.length-1;i>=0;i--){
+      var t=trail[i];t.life-=.025;t.y-=.6;
+      if(t.life<=0){trail.splice(i,1);continue;}
+      ctx2.globalAlpha=t.life;ctx2.fillStyle=t.c;
+      ctx2.font=(8+t.life*8)+'px Comfortaa';ctx2.textAlign='center';
+      ctx2.fillText('\u2605',t.x,t.y);
+    }
+    requestAnimationFrame(anim);
+  }
+  anim();
+})();
+
+// === CONFETTI BURST ===
+(function(){
+  var c=['#F4C430','#4CAF50','#87CEEB','#FF8C42','#B39DDB','#2E5090'];
+  for(var i=0;i<35;i++){var d=document.createElement('div');d.className='cf';
+  d.style.left=Math.random()*100+'vw';d.style.backgroundColor=c[i%c.length];
+  d.style.width=d.style.height=(4+Math.random()*7)+'px';
+  d.style.borderRadius=Math.random()>.5?'50%':'1px';
+  d.style.animationDuration=(2+Math.random()*2.5)+'s';
+  d.style.animationDelay=(Math.random()*1.2)+'s';
+  document.body.appendChild(d);setTimeout(function(e){e.remove()},6000,d)}
+})();
+
+// === CLICK ANYWHERE FOR MINI BURST ===
+document.addEventListener('click',function(e){
+  for(var i=0;i<12;i++){
+    var s=document.createElement('div');s.style.cssText='position:fixed;z-index:5;pointer-events:none;font-size:'+(10+Math.random()*14)+'px;color:'+['#F4C430','#87CEEB','#FF8C42','#B39DDB','#4CAF50'][Math.floor(Math.random()*5)]+';';
+    s.textContent='\u2605';s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';
+    var angle=Math.random()*Math.PI*2,speed=40+Math.random()*60;
+    var dx=Math.cos(angle)*speed,dy=Math.sin(angle)*speed;
+    document.body.appendChild(s);
+    s.animate([
+      {transform:'translate(0,0) scale(1)',opacity:1},
+      {transform:'translate('+dx+'px,'+dy+'px) scale(0)',opacity:0}
+    ],{duration:600+Math.random()*400,easing:'ease-out'});
+    setTimeout(function(el){el.remove()},1100,s);
+  }
+});
+</script>
+</body>
+</html>
